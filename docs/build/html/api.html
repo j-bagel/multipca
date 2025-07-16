@@ -1,0 +1,374 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="./">
+<head>
+  <meta charset="utf-8" /><meta name="viewport" content="width=device-width, initial-scale=1" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>API Reference &mdash; multipca 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="_static/jquery.js?v=5d32c60e"></script>
+      <script src="_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="_static/documentation_options.js?v=01f34227"></script>
+      <script src="_static/doctools.js?v=9a2dae69"></script>
+      <script src="_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="_static/copybutton.js?v=f281be69"></script>
+    <script src="_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="genindex.html" />
+    <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Welcome to multipca’s documentation!" href="index.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="index.html" class="icon icon-home">
+            multipca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1 current"><a class="current reference internal" href="#">API Reference</a><ul>
+<li class="toctree-l2"><a class="reference internal" href="#core-functions">Core Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.solver.MpcaCIResult"><code class="docutils literal notranslate"><span class="pre">MpcaCIResult</span></code></a><ul>
+<li class="toctree-l4"><a class="reference internal" href="#multipca.solver.MpcaCIResult.components"><code class="docutils literal notranslate"><span class="pre">MpcaCIResult.components</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multipca.solver.MpcaCIResult.asymptotic_parameters"><code class="docutils literal notranslate"><span class="pre">MpcaCIResult.asymptotic_parameters</span></code></a></li>
+<li class="toctree-l4"><a class="reference internal" href="#multipca.solver.MpcaCIResult.debiasing_factors"><code class="docutils literal notranslate"><span class="pre">MpcaCIResult.debiasing_factors</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.solver.mpca"><code class="docutils literal notranslate"><span class="pre">mpca()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.solver.mpca_CI"><code class="docutils literal notranslate"><span class="pre">mpca_CI()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#plotting-functions">Plotting Functions</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.plot.CI_plot"><code class="docutils literal notranslate"><span class="pre">CI_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.plot.CI_band_plot"><code class="docutils literal notranslate"><span class="pre">CI_band_plot()</span></code></a></li>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.plot.loading_plot"><code class="docutils literal notranslate"><span class="pre">loading_plot()</span></code></a></li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="#example-data">Example Data</a><ul>
+<li class="toctree-l3"><a class="reference internal" href="#multipca.load_citibike_example"><code class="docutils literal notranslate"><span class="pre">load_citibike_example()</span></code></a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="index.html">multipca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="index.html" class="icon icon-home" aria-label="Home"></a></li>
+      <li class="breadcrumb-item active">API Reference</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="_sources/api.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="api-reference">
+<h1>API Reference<a class="headerlink" href="#api-reference" title="Link to this heading"></a></h1>
+<section id="core-functions">
+<h2>Core Functions<a class="headerlink" href="#core-functions" title="Link to this heading"></a></h2>
+<dl class="py class" id="module-multipca.solver">
+<dt class="sig sig-object py" id="multipca.solver.MpcaCIResult">
+<em class="property"><span class="pre">class</span><span class="w"> </span></em><span class="sig-prename descclassname"><span class="pre">multipca.solver.</span></span><span class="sig-name descname"><span class="pre">MpcaCIResult</span></span><a class="reference internal" href="_modules/multipca/solver.html#MpcaCIResult"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.solver.MpcaCIResult" title="Link to this definition"></a></dt>
+<dd><p>Bases: <code class="xref py py-class docutils literal notranslate"><span class="pre">TypedDict</span></code></p>
+<dl class="py attribute">
+<dt class="sig sig-object py" id="multipca.solver.MpcaCIResult.components">
+<span class="sig-name descname"><span class="pre">components</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">ndarray</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></em><a class="headerlink" href="#multipca.solver.MpcaCIResult.components" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="multipca.solver.MpcaCIResult.asymptotic_parameters">
+<span class="sig-name descname"><span class="pre">asymptotic_parameters</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#multipca.solver.MpcaCIResult.asymptotic_parameters" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+<dl class="py attribute">
+<dt class="sig sig-object py" id="multipca.solver.MpcaCIResult.debiasing_factors">
+<span class="sig-name descname"><span class="pre">debiasing_factors</span></span><em class="property"><span class="p"><span class="pre">:</span></span><span class="w"> </span><span class="pre">ndarray</span></em><a class="headerlink" href="#multipca.solver.MpcaCIResult.debiasing_factors" title="Link to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multipca.solver.mpca">
+<span class="sig-prename descclassname"><span class="pre">multipca.solver.</span></span><span class="sig-name descname"><span class="pre">mpca</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'multi'</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca/solver.html#mpca"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.solver.mpca" title="Link to this definition"></a></dt>
+<dd><p>The algorithm for multipca, calculating the multiway PCs.</p>
+<section id="parameters">
+<h3>Parameters:<a class="headerlink" href="#parameters" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>array: numpy array</dt><dd><p>d0 by d1 by d2 … by N</p>
+</dd>
+<dt>r: int</dt><dd><p>targeted number of rank, should be no larger than min(d1, d2, …)</p>
+</dd>
+<dt>max_iterations: int</dt><dd><p>maximum number of iterations</p>
+</dd>
+<dt>threshold: float</dt><dd><p>when the results are closer than this number, iteration stops</p>
+</dd>
+<dt>initialization: str</dt><dd><p>either ‘simple’ or ‘multi’,
+corresponding to initialize once for each component or initialize with multiple threads, then choose the best one</p>
+</dd>
+</dl>
+</section>
+<section id="returns">
+<h3>Returns:<a class="headerlink" href="#returns" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>components: list</dt><dd><p>a list of length r, each element is also a list (sublist)
+each sublist has length equal to the number of modes, i.e., len(array.shape)-1,
+components[i][j] is a (dj,) numpy vector, corresponding to the j-th mode PC component of rank i</p>
+</dd>
+</dl>
+</section>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multipca.solver.mpca_CI">
+<span class="sig-prename descclassname"><span class="pre">multipca.solver.</span></span><span class="sig-name descname"><span class="pre">mpca_CI</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">array</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">r</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">max_iterations</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">20</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">threshold</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1e-05</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">initialization</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'multi'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">debias</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">'sample-split'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">stability</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">seed</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">42</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca/solver.html#mpca_CI"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.solver.mpca_CI" title="Link to this definition"></a></dt>
+<dd><p>The algorithm for multipca with confidence interval.</p>
+<section id="id1">
+<h3>Parameters:<a class="headerlink" href="#id1" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>array: numpy array</dt><dd><p>d0 by d1 by d2 … by N</p>
+</dd>
+<dt>r: int</dt><dd><p>targeted number of rank, should be no larger than min(d1, d2, …)</p>
+</dd>
+<dt>max_iterations: int</dt><dd><p>maximum number of iterations</p>
+</dd>
+<dt>threshold: float</dt><dd><p>when the results are closer than this number, iteration stops</p>
+</dd>
+<dt>initialization: str</dt><dd><p>either ‘simple’ or ‘multi’,
+corresponding to initialize once for each component or initialize with multiple threads, then choose the best one</p>
+</dd>
+<dt>debias: str</dt><dd><p>either ‘simple’ or ‘sample-split’,
+corresponding to the debiasing method used</p>
+</dd>
+<dt>stability: bool</dt><dd><p>True or False</p>
+</dd>
+<dt>seed: int</dt><dd><p>Random seed for reproducibility</p>
+</dd>
+</dl>
+</section>
+<section id="id2">
+<h3>Returns:<a class="headerlink" href="#id2" title="Link to this heading"></a></h3>
+<dl>
+<dt>MpcaCIResult</dt><dd><p>A dictionary containing:
+- components: list of lists, each sublist has length equal to the number of modes</p>
+<blockquote>
+<div><p>components[i][j] is a (dj,) numpy vector, corresponding to the j-th mode PC component of rank i</p>
+</div></blockquote>
+<ul class="simple">
+<li><dl class="simple">
+<dt>asymptotic_parameters: numpy array of shape (r,)</dt><dd><p>Asymptotic parameters for confidence intervals</p>
+</dd>
+</dl>
+</li>
+<li><dl class="simple">
+<dt>debiasing_factors: numpy array of shape (r, num_mode)</dt><dd><p>Debiasing factors for each component and mode</p>
+</dd>
+</dl>
+</li>
+</ul>
+</dd>
+</dl>
+</section>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</section>
+<section id="plotting-functions">
+<h2>Plotting Functions<a class="headerlink" href="#plotting-functions" title="Link to this heading"></a></h2>
+<dl class="py function" id="module-multipca.plot">
+<dt class="sig sig-object py" id="multipca.plot.CI_plot">
+<span class="sig-prename descclassname"><span class="pre">multipca.plot.</span></span><span class="sig-name descname"><span class="pre">CI_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y_as_value</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca/plot.html#CI_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.plot.CI_plot" title="Link to this definition"></a></dt>
+<dd><p>Plotting multiway PC component as a x-y or y-x scatter plot with confidence intervals (error bars).</p>
+<section id="id3">
+<h3>Parameters:<a class="headerlink" href="#id3" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>result: MpcaCIResult</dt><dd><p>The result dictionary returned by mpca_CI containing:
+- components: list of PC components
+- asymptotic_parameters: asymptotic parameters array
+- debiasing_factors: debiasing factors array</p>
+</dd>
+<dt>rank: int</dt><dd><p>an integer between 1 and r, default to 1</p>
+</dd>
+<dt>mode: int</dt><dd><p>an integer between 1 and the total number of modes, default to 1</p>
+</dd>
+<dt>confidence: float</dt><dd><p>0 &lt; confidence &lt; 1, default to 0.95</p>
+</dd>
+<dt>labels:</dt><dd><p>can be:
+(1) None
+(2) A list of length equal to the dimension of that mode, containing labels of that mode
+(3) A length = number of modes list of lists, each list contains the labels of each mode</p>
+</dd>
+<dt>y_as_value: bool</dt><dd><p>if True, plot as x-y plot
+else, plot as y-x plot</p>
+</dd>
+<dt>flip: bool</dt><dd><p>Should the sign of the plotted PC be flipped? Default to False.</p>
+</dd>
+</dl>
+</section>
+<section id="id4">
+<h3>Returns:<a class="headerlink" href="#id4" title="Link to this heading"></a></h3>
+<p>ax: a matplotlib axe</p>
+</section>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multipca.plot.CI_band_plot">
+<span class="sig-prename descclassname"><span class="pre">multipca.plot.</span></span><span class="sig-name descname"><span class="pre">CI_band_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">confidence</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">0.95</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">flip</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca/plot.html#CI_band_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.plot.CI_band_plot" title="Link to this definition"></a></dt>
+<dd><p>Plotting multiway PC component as a x-y line plot with confidence band.
+It should only be used if one of the modes can be treated as continuous, for instance, years or months, so that a line plot is appropriate.</p>
+<section id="id5">
+<h3>Parameters:<a class="headerlink" href="#id5" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>result: MpcaCIResult</dt><dd><p>The result dictionary returned by mpca_CI containing:
+- components: list of PC components
+- asymptotic_parameters: asymptotic parameters array
+- debiasing_factors: debiasing factors array</p>
+</dd>
+<dt>rank: int</dt><dd><p>an integer between 1 and r, default to 1</p>
+</dd>
+<dt>mode: int</dt><dd><p>an integer between 1 and the total number of modes, default to 1</p>
+</dd>
+<dt>confidence: float</dt><dd><p>0 &lt; confidence &lt; 1, default to 0.95</p>
+</dd>
+<dt>labels:</dt><dd><p>can be:
+(1) None
+(2) A list of length equal to the dimension of that mode, containing labels of that mode
+(3) A length = number of modes list of lists, each list contains the labels of each mode</p>
+</dd>
+<dt>flip: bool</dt><dd><p>Should the sign of the plotted PC be flipped? Default to False.</p>
+</dd>
+</dl>
+</section>
+<section id="id6">
+<h3>Returns:<a class="headerlink" href="#id6" title="Link to this heading"></a></h3>
+<p>ax: a matplotlib axis</p>
+</section>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="multipca.plot.loading_plot">
+<span class="sig-prename descclassname"><span class="pre">multipca.plot.</span></span><span class="sig-name descname"><span class="pre">loading_plot</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">result</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank1</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">rank2</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">2</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">mode</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">labels</span></span><span class="o"><span class="pre">=</span></span><span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca/plot.html#loading_plot"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.plot.loading_plot" title="Link to this definition"></a></dt>
+<dd><p>Plotting two multiway PC components of the same mode (different ranks) on a x-y scatter plot. It is the counterpart of the loading plot of PCA.</p>
+<section id="id7">
+<h3>Parameters:<a class="headerlink" href="#id7" title="Link to this heading"></a></h3>
+<dl class="simple">
+<dt>result: MpcaCIResult</dt><dd><p>The result dictionary returned by mpca_CI containing:
+- components: list of PC components
+- asymptotic_parameters: asymptotic parameters array
+- debiasing_factors: debiasing factors array</p>
+</dd>
+<dt>rank1: int</dt><dd><p>an integer between 1 and r, default to 1</p>
+</dd>
+<dt>rank2: int</dt><dd><p>an integer between 1 and r, default to 1</p>
+</dd>
+<dt>mode: int</dt><dd><p>an integer between 1 and the total number of modes, default to 1</p>
+</dd>
+<dt>labels:</dt><dd><p>can be:
+(1) None
+(2) A list of length equal to the dimension of that mode, containing labels of that mode
+(3) A length = number of modes list of lists, each list contains the labels of each mode</p>
+</dd>
+</dl>
+</section>
+<section id="id8">
+<h3>Returns:<a class="headerlink" href="#id8" title="Link to this heading"></a></h3>
+<p>ax: a matplotlib axis</p>
+</section>
+<dl class="field-list simple">
+</dl>
+</dd></dl>
+
+</section>
+<section id="example-data">
+<h2>Example Data<a class="headerlink" href="#example-data" title="Link to this heading"></a></h2>
+<dl class="py function">
+<dt class="sig sig-object py" id="multipca.load_citibike_example">
+<span class="sig-prename descclassname"><span class="pre">multipca.</span></span><span class="sig-name descname"><span class="pre">load_citibike_example</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="reference internal" href="_modules/multipca.html#load_citibike_example"><span class="viewcode-link"><span class="pre">[source]</span></span></a><a class="headerlink" href="#multipca.load_citibike_example" title="Link to this definition"></a></dt>
+<dd><p>Load the example Citibike dataset.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns<span class="colon">:</span></dt>
+<dd class="field-odd"><p><strong>array</strong> – Bike sharing data from NYC where:
+- First dimension (24): Hours of the day
+- Second dimension (35): Different bike stations
+- Third dimension (522): Days in the dataset</p>
+</dd>
+<dt class="field-even">Return type<span class="colon">:</span></dt>
+<dd class="field-even"><p>ndarray, shape (24, 35, 522)</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="index.html" class="btn btn-neutral float-left" title="Welcome to multipca’s documentation!" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Jialin Ouyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

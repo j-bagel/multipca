@@ -1,0 +1,300 @@
+
+
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" data-content_root="../../">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>multipca.plot &mdash; multipca 0.1.0 documentation</title>
+      <link rel="stylesheet" type="text/css" href="../../_static/pygments.css?v=b86133f3" />
+      <link rel="stylesheet" type="text/css" href="../../_static/css/theme.css?v=e59714d7" />
+      <link rel="stylesheet" type="text/css" href="../../_static/copybutton.css?v=76b2166b" />
+
+  
+      <script src="../../_static/jquery.js?v=5d32c60e"></script>
+      <script src="../../_static/_sphinx_javascript_frameworks_compat.js?v=2cd50e6c"></script>
+      <script src="../../_static/documentation_options.js?v=01f34227"></script>
+      <script src="../../_static/doctools.js?v=9a2dae69"></script>
+      <script src="../../_static/sphinx_highlight.js?v=dc90522c"></script>
+      <script src="../../_static/clipboard.min.js?v=a7894cd8"></script>
+      <script src="../../_static/copybutton.js?v=f281be69"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+
+          
+          
+          <a href="../../index.html" class="icon icon-home">
+            multipca
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" aria-label="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../../api.html">API Reference</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">multipca</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home" aria-label="Home"></a></li>
+          <li class="breadcrumb-item"><a href="../index.html">Module code</a></li>
+          <li class="breadcrumb-item"><a href="../multipca.html">multipca</a></li>
+      <li class="breadcrumb-item active">multipca.plot</li>
+      <li class="wy-breadcrumbs-aside">
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <h1>Source code for multipca.plot</h1><div class="highlight"><pre>
+<span></span><span class="kn">import</span><span class="w"> </span><span class="nn">numpy</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">np</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">matplotlib.pyplot</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">plt</span>
+<span class="kn">import</span><span class="w"> </span><span class="nn">scipy.stats</span><span class="w"> </span><span class="k">as</span><span class="w"> </span><span class="nn">st</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">.solver</span><span class="w"> </span><span class="kn">import</span> <span class="n">MpcaCIResult</span>
+
+
+<span class="k">def</span><span class="w"> </span><span class="nf">_read_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="n">len_u</span><span class="p">,</span> <span class="n">mode</span><span class="p">):</span>
+    <span class="k">if</span> <span class="ow">not</span> <span class="n">labels</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="p">[</span><span class="nb">str</span><span class="p">(</span><span class="n">_</span><span class="p">)</span> <span class="k">for</span> <span class="n">_</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span><span class="n">len_u</span><span class="o">+</span><span class="mi">1</span><span class="p">)]</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">labels</span><span class="p">)</span> <span class="ow">is</span> <span class="ow">not</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;labels should be None or a list.&#39;</span><span class="p">)</span>
+    <span class="k">elif</span> <span class="nb">type</span><span class="p">(</span><span class="n">labels</span><span class="p">[</span><span class="mi">0</span><span class="p">])</span> <span class="ow">is</span> <span class="nb">list</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">labels</span><span class="p">[</span><span class="n">mode</span><span class="p">]</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">names</span> <span class="o">=</span> <span class="n">labels</span>
+    <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">)</span> <span class="o">!=</span>  <span class="n">len_u</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;Length of labels not matching the dimension of that mode.&#39;</span><span class="p">)</span>
+
+    <span class="k">return</span> <span class="n">names</span>
+
+<div class="viewcode-block" id="CI_plot">
+<a class="viewcode-back" href="../../api.html#multipca.plot.CI_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">CI_plot</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">MpcaCIResult</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span> 
+           <span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">y_as_value</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">True</span><span class="p">,</span> <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plotting multiway PC component as a x-y or y-x scatter plot with confidence intervals (error bars).</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    result: MpcaCIResult</span>
+<span class="sd">        The result dictionary returned by mpca_CI containing:</span>
+<span class="sd">        - components: list of PC components</span>
+<span class="sd">        - asymptotic_parameters: asymptotic parameters array</span>
+<span class="sd">        - debiasing_factors: debiasing factors array</span>
+<span class="sd">    rank: int</span>
+<span class="sd">        an integer between 1 and r, default to 1</span>
+<span class="sd">    mode: int</span>
+<span class="sd">        an integer between 1 and the total number of modes, default to 1</span>
+<span class="sd">    confidence: float</span>
+<span class="sd">        0 &lt; confidence &lt; 1, default to 0.95</span>
+<span class="sd">    labels:</span>
+<span class="sd">        can be:</span>
+<span class="sd">        (1) None</span>
+<span class="sd">        (2) A list of length equal to the dimension of that mode, containing labels of that mode</span>
+<span class="sd">        (3) A length = number of modes list of lists, each list contains the labels of each mode</span>
+<span class="sd">    y_as_value: bool</span>
+<span class="sd">        if True, plot as x-y plot</span>
+<span class="sd">        else, plot as y-x plot</span>
+<span class="sd">    flip: bool</span>
+<span class="sd">        Should the sign of the plotted PC be flipped? Default to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    ax: a matplotlib axe</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+    <span class="k">def</span><span class="w"> </span><span class="nf">CI_one</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">asy</span><span class="p">,</span> <span class="n">debias</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="n">z_value</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">confidence</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="k">if</span> <span class="n">y_as_value</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">y</span> <span class="o">=</span> <span class="n">u</span><span class="o">*</span><span class="n">debias</span><span class="p">,</span> <span class="n">x</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">))),</span> <span class="n">yerr</span> <span class="o">=</span> <span class="n">z_value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy</span><span class="p">,</span> <span class="n">capsize</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">capthick</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+        <span class="k">else</span><span class="p">:</span>
+            <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">u</span><span class="o">*</span><span class="n">debias</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">))),</span> <span class="n">xerr</span> <span class="o">=</span> <span class="n">z_value</span> <span class="o">*</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy</span><span class="p">,</span> <span class="n">capsize</span> <span class="o">=</span> <span class="mi">5</span><span class="p">,</span> <span class="n">capthick</span> <span class="o">=</span> <span class="mf">1.5</span><span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+    <span class="c1">### error messages</span>
+    <span class="k">if</span> <span class="n">confidence</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">confidence</span><span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;confidence should be between 0 and 1&#39;</span><span class="p">)</span>
+    <span class="c1">###</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">flip</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">u</span>
+    <span class="n">asy</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;asymptotic_parameters&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">debias</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;debiasing_factors&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_read_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+    <span class="k">if</span> <span class="n">y_as_value</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))),</span> <span class="n">names</span><span class="p">)</span>
+    <span class="k">else</span><span class="p">:</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">set_yticks</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))),</span> <span class="n">names</span><span class="p">)</span>
+    <span class="n">CI_one</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">asy</span><span class="p">,</span> <span class="n">debias</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Confidence Interval of Mode = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, PC &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="CI_band_plot">
+<a class="viewcode-back" href="../../api.html#multipca.plot.CI_band_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">CI_band_plot</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">MpcaCIResult</span><span class="p">,</span> <span class="n">rank</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">confidence</span><span class="p">:</span> <span class="nb">float</span> <span class="o">=</span> <span class="mf">0.95</span><span class="p">,</span>
+                <span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">,</span> <span class="n">flip</span><span class="p">:</span> <span class="nb">bool</span> <span class="o">=</span> <span class="kc">False</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plotting multiway PC component as a x-y line plot with confidence band.</span>
+<span class="sd">    It should only be used if one of the modes can be treated as continuous, for instance, years or months, so that a line plot is appropriate.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    result: MpcaCIResult</span>
+<span class="sd">        The result dictionary returned by mpca_CI containing:</span>
+<span class="sd">        - components: list of PC components</span>
+<span class="sd">        - asymptotic_parameters: asymptotic parameters array</span>
+<span class="sd">        - debiasing_factors: debiasing factors array</span>
+<span class="sd">    rank: int</span>
+<span class="sd">        an integer between 1 and r, default to 1</span>
+<span class="sd">    mode: int</span>
+<span class="sd">        an integer between 1 and the total number of modes, default to 1</span>
+<span class="sd">    confidence: float</span>
+<span class="sd">        0 &lt; confidence &lt; 1, default to 0.95</span>
+<span class="sd">    labels:</span>
+<span class="sd">        can be:</span>
+<span class="sd">        (1) None</span>
+<span class="sd">        (2) A list of length equal to the dimension of that mode, containing labels of that mode</span>
+<span class="sd">        (3) A length = number of modes list of lists, each list contains the labels of each mode</span>
+<span class="sd">    flip: bool</span>
+<span class="sd">        Should the sign of the plotted PC be flipped? Default to False.</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    ax: a matplotlib axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">CI_band_one</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">asy</span><span class="p">,</span> <span class="n">debias</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="n">z_value</span> <span class="o">=</span> <span class="n">st</span><span class="o">.</span><span class="n">norm</span><span class="o">.</span><span class="n">ppf</span><span class="p">(</span> <span class="mi">1</span> <span class="o">-</span> <span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">confidence</span><span class="p">)</span><span class="o">/</span><span class="mi">2</span> <span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">))),</span> <span class="n">u</span><span class="o">*</span><span class="n">debias</span><span class="p">)</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">fill_between</span><span class="p">(</span><span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">))),</span> <span class="n">u</span><span class="o">*</span><span class="n">debias</span><span class="o">-</span><span class="n">z_value</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy</span><span class="p">,</span> <span class="n">u</span><span class="o">*</span><span class="n">debias</span><span class="o">+</span><span class="n">z_value</span><span class="o">*</span><span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy</span><span class="p">,</span> <span class="n">alpha</span><span class="o">=</span><span class="mf">0.2</span><span class="p">)</span>
+
+    <span class="c1">### error messages</span>
+    <span class="k">if</span> <span class="n">confidence</span> <span class="o">&lt;=</span> <span class="mi">0</span> <span class="ow">or</span> <span class="n">confidence</span><span class="o">&gt;=</span> <span class="mi">1</span><span class="p">:</span>
+        <span class="k">raise</span> <span class="ne">ValueError</span><span class="p">(</span><span class="s1">&#39;confidence should be between 0 and 1&#39;</span><span class="p">)</span>
+    <span class="c1">###</span>
+
+    <span class="n">u</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="k">if</span> <span class="n">flip</span><span class="p">:</span>
+        <span class="n">u</span> <span class="o">=</span> <span class="o">-</span><span class="n">u</span>
+    <span class="n">asy</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;asymptotic_parameters&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">debias</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;debiasing_factors&#39;</span><span class="p">][</span><span class="n">rank</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_read_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">u</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+    <span class="n">CI_band_one</span><span class="p">(</span><span class="n">u</span><span class="p">,</span> <span class="n">asy</span><span class="p">,</span> <span class="n">debias</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xticks</span><span class="p">(</span><span class="n">ticks</span> <span class="o">=</span> <span class="nb">list</span><span class="p">(</span><span class="nb">range</span><span class="p">(</span><span class="nb">len</span><span class="p">(</span><span class="n">names</span><span class="p">))),</span> <span class="n">labels</span> <span class="o">=</span> <span class="n">names</span><span class="p">)</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Confidence Interval of Mode = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">)</span> <span class="o">+</span> <span class="s1">&#39;, PC &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank</span><span class="p">))</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+
+<div class="viewcode-block" id="loading_plot">
+<a class="viewcode-back" href="../../api.html#multipca.plot.loading_plot">[docs]</a>
+<span class="k">def</span><span class="w"> </span><span class="nf">loading_plot</span><span class="p">(</span><span class="n">result</span><span class="p">:</span> <span class="n">MpcaCIResult</span><span class="p">,</span> <span class="n">rank1</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">rank2</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">2</span><span class="p">,</span> <span class="n">mode</span><span class="p">:</span> <span class="nb">int</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="n">labels</span> <span class="o">=</span> <span class="kc">None</span><span class="p">):</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot; Plotting two multiway PC components of the same mode (different ranks) on a x-y scatter plot. It is the counterpart of the loading plot of PCA.</span>
+
+<span class="sd">    Parameters:</span>
+<span class="sd">    -----------</span>
+<span class="sd">    result: MpcaCIResult</span>
+<span class="sd">        The result dictionary returned by mpca_CI containing:</span>
+<span class="sd">        - components: list of PC components</span>
+<span class="sd">        - asymptotic_parameters: asymptotic parameters array</span>
+<span class="sd">        - debiasing_factors: debiasing factors array</span>
+<span class="sd">    rank1: int</span>
+<span class="sd">        an integer between 1 and r, default to 1</span>
+<span class="sd">    rank2: int</span>
+<span class="sd">        an integer between 1 and r, default to 1</span>
+<span class="sd">    mode: int</span>
+<span class="sd">        an integer between 1 and the total number of modes, default to 1</span>
+<span class="sd">    labels:</span>
+<span class="sd">        can be:</span>
+<span class="sd">        (1) None</span>
+<span class="sd">        (2) A list of length equal to the dimension of that mode, containing labels of that mode</span>
+<span class="sd">        (3) A length = number of modes list of lists, each list contains the labels of each mode</span>
+
+<span class="sd">    Returns:</span>
+<span class="sd">    --------</span>
+<span class="sd">    ax: a matplotlib axis</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">lp_one</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">asy1</span><span class="p">,</span> <span class="n">debias1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">asy2</span><span class="p">,</span> <span class="n">debias2</span><span class="p">,</span> <span class="n">ax</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">errorbar</span><span class="p">(</span><span class="n">x</span> <span class="o">=</span> <span class="n">u1</span><span class="o">*</span><span class="n">debias1</span><span class="p">,</span> <span class="n">y</span> <span class="o">=</span> <span class="n">u2</span><span class="o">*</span><span class="n">debias2</span><span class="p">,</span> <span class="n">xerr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u1</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy1</span><span class="p">,</span> <span class="n">yerr</span> <span class="o">=</span> <span class="n">np</span><span class="o">.</span><span class="n">sqrt</span><span class="p">(</span><span class="mi">1</span><span class="o">-</span><span class="n">u2</span><span class="o">**</span><span class="mi">2</span><span class="p">)</span><span class="o">*</span><span class="n">asy2</span><span class="p">,</span> <span class="n">fmt</span> <span class="o">=</span> <span class="s1">&#39;o&#39;</span><span class="p">)</span>
+
+    <span class="n">u1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="n">rank1</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">asy1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;asymptotic_parameters&#39;</span><span class="p">][</span><span class="n">rank1</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">debias1</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;debiasing_factors&#39;</span><span class="p">][</span><span class="n">rank1</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">u2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;components&#39;</span><span class="p">][</span><span class="n">rank2</span><span class="o">-</span><span class="mi">1</span><span class="p">][</span><span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">asy2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;asymptotic_parameters&#39;</span><span class="p">][</span><span class="n">rank2</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+    <span class="n">debias2</span> <span class="o">=</span> <span class="n">result</span><span class="p">[</span><span class="s1">&#39;debiasing_factors&#39;</span><span class="p">][</span><span class="n">rank2</span><span class="o">-</span><span class="mi">1</span><span class="p">,</span> <span class="n">mode</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span>
+
+    <span class="n">names</span> <span class="o">=</span> <span class="n">_read_labels</span><span class="p">(</span><span class="n">labels</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">u1</span><span class="p">),</span> <span class="n">mode</span><span class="p">)</span>
+
+    <span class="n">ax</span> <span class="o">=</span> <span class="n">plt</span><span class="o">.</span><span class="n">subplot</span><span class="p">()</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_title</span><span class="p">(</span><span class="s1">&#39;Loading Plot of Mode = &#39;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">mode</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_xlabel</span><span class="p">(</span><span class="s2">&quot;PC &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank1</span><span class="p">))</span>
+    <span class="n">ax</span><span class="o">.</span><span class="n">set_ylabel</span><span class="p">(</span><span class="s2">&quot;PC &quot;</span> <span class="o">+</span> <span class="nb">str</span><span class="p">(</span><span class="n">rank2</span><span class="p">))</span>
+    <span class="k">for</span> <span class="n">name</span><span class="p">,</span> <span class="n">x</span><span class="p">,</span> <span class="n">y</span> <span class="ow">in</span> <span class="nb">zip</span><span class="p">(</span><span class="n">names</span><span class="p">,</span> <span class="n">u1</span><span class="o">*</span><span class="n">debias1</span><span class="p">,</span> <span class="n">u2</span><span class="o">*</span><span class="n">debias2</span><span class="p">):</span>
+        <span class="n">ax</span><span class="o">.</span><span class="n">annotate</span><span class="p">(</span><span class="n">name</span><span class="p">,</span> <span class="p">(</span><span class="n">x</span><span class="p">,</span><span class="n">y</span><span class="p">),</span>
+                     <span class="n">textcoords</span><span class="o">=</span><span class="s2">&quot;offset points&quot;</span><span class="p">,</span> <span class="c1"># how to position the text</span>
+                     <span class="n">xytext</span><span class="o">=</span><span class="p">(</span><span class="mi">10</span><span class="p">,</span><span class="mi">10</span><span class="p">),</span> <span class="c1"># distance from text to points (x,y)</span>
+                     <span class="n">ha</span><span class="o">=</span><span class="s1">&#39;center&#39;</span><span class="p">)</span> <span class="c1"># horizontal alignment can be left, right or center</span>
+    <span class="n">lp_one</span><span class="p">(</span><span class="n">u1</span><span class="p">,</span> <span class="n">asy1</span><span class="p">,</span> <span class="n">debias1</span><span class="p">,</span> <span class="n">u2</span><span class="p">,</span> <span class="n">asy2</span><span class="p">,</span> <span class="n">debias2</span><span class="p">,</span> <span class="n">ax</span><span class="p">)</span>
+    <span class="k">return</span> <span class="n">ax</span></div>
+
+</pre></div>
+
+           </div>
+          </div>
+          <footer>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright 2024, Jialin Ouyang.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
