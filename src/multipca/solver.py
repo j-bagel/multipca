@@ -171,12 +171,15 @@ def _ini_multi(array, r_pca, num_multi = None, seed = 42):
 
     # parameters:
     #  array
-    #  r_pca: the rank for the PCA step for multiple initialization
+    #  r_pca: the rank for the PCA step for multiple initialization. if larger than array.shape[0], it will be capped at array.shape[0]
     #  num_multi: int, number of multiple initialization, default to r_pca+3
 
     # returns:
     #  ini_vec_list_list: a list of ini_vec_list, outside list length = num_multi, inside list length = num_mode
 
+    # guardrail
+    r_pca = min(r_pca, array.shape[0])
+    
     if num_multi is None:
         num_multi = r_pca + 3
 
@@ -422,7 +425,7 @@ def mpca_CI(array: np.ndarray,
         sigma[rank] =  np.sqrt(max(0, signal - sigma0**2))
         if sigma[rank] == 0:
             asymp_para[rank] = np.inf
-            logger.warning(f'Estimated signal strength of rank {rank} is zero.')
+            logger.warning(f'Estimated signal strength of rank {rank+1} is zero.')
         else:
             asymp_para[rank] = np.sqrt( (sigma0**2) * (sigma[rank]**2+sigma0**2) / sigma[rank]**4) / np.sqrt(N)
 
