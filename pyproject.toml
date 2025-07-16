@@ -4,7 +4,7 @@ build-backend = "setuptools.build_meta"
 
 [project]
 name = "multipca"
-version = "0.1.1"
+version = "0.1.2"
 authors = [
   { name="Jialin Ouyang", email="jo2559@columbia.edu" },
 ]
